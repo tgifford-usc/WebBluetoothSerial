@@ -218,6 +218,10 @@ class CustomSerial extends HTMLElement {
         if (this.customHandler) {
             this.customHandler(val);
         }
+        
+        if (this.serialReadoutElement) {
+            this.serialReadoutElement.innerHTML = val;
+        }
     }
 
 
