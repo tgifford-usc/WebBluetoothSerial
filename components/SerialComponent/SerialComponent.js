@@ -123,8 +123,7 @@ class CustomSerial extends HTMLElement {
                     this.btConnectButton.innerHTML = "Disconnect";
                     this.btConnectButton.classList.remove('toggled-off');
                     this.btConnectButton.classList.add('toggled-on');
-                    this.connectionPanel.setAttribute('style', 'display: none;');
-
+                    
                 } catch (error) {
                     this.uBitBTDevice = null;
                     this.rxCharacteristic = null;
@@ -132,7 +131,6 @@ class CustomSerial extends HTMLElement {
                 }
             } else {
                 try {
-                    this.connectionPanel.setAttribute('style', 'display: flex;');
                     this.disconnectBluetooth();
                     this.uBitBTDevice = null;
                     this.rxCharacteristic = null;
@@ -222,7 +220,7 @@ class CustomSerial extends HTMLElement {
         }
     }
 
-    
+
     expandTokenBuffer(arr) {
         let expandedBuffer = new Uint8Array(this.tokenBuffer.length + arr.length);
         expandedBuffer.set(this.tokenBuffer);
