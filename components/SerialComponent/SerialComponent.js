@@ -212,15 +212,17 @@ class CustomSerial extends HTMLElement {
     handleToken = function(arr) {
         const stringValue = new TextDecoder().decode(arr);
         const val = stringValue.trim();
-        this.handleMessage(val);
+        this.dispatchMessage(val);
     }
 
 
-    handleMessage = function(val) {
-        // override this in client application
+    dispatchMessage = function(val) {
+        if (this.customHandler) {
+            this.customHandler(val);
+        }
     }
 
-
+    
     expandTokenBuffer(arr) {
         let expandedBuffer = new Uint8Array(this.tokenBuffer.length + arr.length);
         expandedBuffer.set(this.tokenBuffer);
