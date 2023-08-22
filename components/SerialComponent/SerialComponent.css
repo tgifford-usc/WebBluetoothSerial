@@ -59,7 +59,7 @@
     border-color: var(--send-textbox-border-color, rgb(71, 64, 55));
     background-color: var(--send-textbox-background-color, rgb(25, 3, 83));
     border-width: var(--send-textbox-border-width, 0em);
-    min-width: var(--send-textbox-min-width, 12em);
+    min-width: var(--send-textbox-min-width, 8em);
     color: var(--send-textbox-color, aliceblue);
     font-size: var(--send-textbox-font-size, 1em);
     height: var(--send-textbox-height, 2em);
@@ -78,7 +78,7 @@
     border-width: var(--receive-textbox-border-width, 0em);
     border-color: var(--receive-textbox-border-color, rgb(71, 64, 55));
     background-color: var(--receive-textbox-background-color,rgb(10, 11, 10));
-    min-width: var(--receive-textbox-min-width, 12em);
+    min-width: var(--receive-textbox-min-width, 8em);
     height: var(--receive-textbox-height, 2em);
     font-size: var(--receive-textbox-font-size, 1em);
     display: var(--receive-textbox-display, flex);
