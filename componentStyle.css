@@ -1,0 +1,128 @@
+
+/* This allows for customising the layout of parts of the Serial Component test panel
+ * for example, hiding parts of the panel that aren't relevant.  
+ * 
+ * You only need to use this stylesheet if you are displaying the Serial Component test panel
+ * in your interface.  If you are just using its API, and hiding the test panel, you can ignore
+ * this stylesheet
+ */
+ custom-serial {    
+    /* set this to 'none' to hide the send panel, or 'flex' to show it */
+    --send-panel-display: flex;
+    
+    /* set this to 'none' to hide the receive panel, or 'flex' to show it */
+    --receive-panel-display: flex;
+
+    /* set this to 100% to allow the component to go full width */
+    /* --component-max-width: 100%; */
+
+    /* this controls the look of the button for expanding or collapsing the component */
+    /* --expand-button-background-color: rgb(72, 39, 163);
+    --expand-collapse-button-border: none;
+    --expand-button-text-color: white;
+    --expand-collapse-button-text-align: center;
+    --expand-collapse-button-text-decoration: none;
+    --expand-collapse-button-display: inline-block;
+    --expand-collapse-button-font-size: 0.5em;
+    --expand-collapse-button-border-radius: 0.5em; */
+
+    /* these styles apply to the collapsed component */
+    /* --title-panel-collapsed-align-items: center;
+    --title-panel-collapsed-border-style: none;
+    --title-panel-collapsed-border-color: rgb(118, 28, 28);
+    --title-panel-collapsed-padding-bottom: 0.25em; */
+
+    /* these styles apply to the expanded component */
+    /* --title-panel-expanded-align-items: center;
+    --title-panel-expanded-border-style: none;
+    --title-panel-expande-padding-bottom: 0.25em; */
+    
+    /* these allow styling of toggle buttons */
+    /* --connect-button-height: 2.75em;
+    --connect-button-margin: 0.25em;
+    --connect-button-text-align: center;
+    --connect-button-text-decoration: none;
+    --connect-button-font-size: 1em;
+    --connect-button-border-radius: 0.5em;
+    --connect-button-padding: 0em 0.5em; */
+    
+    /* and these allow styling of toggle buttons when toggled on */
+    /* --toggle-button-on-color: rgb(44, 104, 46); 
+    --toggle-button-on-border-style: none;
+    --toggle-button-on-border-color: rgb(44, 104, 46);
+    --toggle-button-on-font-color: white; */
+        
+    /* and these allow styling of toggle buttons when toggled off */
+    /* --toggle-button-off-color: rgb(111, 27, 27);
+    --toggle-button-off-border-style: none;
+    --toggle-button-off-border-color: rgb(111, 27, 27);
+    --toggle-button-off-font-color: white; */
+
+    /* and here are the rest of the variables, hopefully relatively self-explanatory */
+    /* --sub-panel-background-color: rgb(45, 41, 41);
+
+    --title-panel-font-family: Verdana, Geneva, Tahoma, sans-serif;
+    --title-panel-font-size: 1em;
+    --title-panel-color: aliceblue;
+        
+    --main-panel-background-color: rgb(59, 55, 55);
+    --main-panel-color: aliceblue;
+    --main-panel-font-family: Verdana, Geneva, Tahoma, sans-serif;
+    --main-panel-border-style: none;
+    --main-panel-border-color: rgb(111, 110, 110);
+    --main-panel-border-radius: 0.5em;
+    --main-panel-padding: 0.25em;
+    --main-panel-align-items: center;
+    
+    --main-label-padding-left: 0.25rem;
+    --main-label-font-size: 0.75em;
+        
+    --send-panel-margin: 0.25em;
+    --send-panel-align-items: center;
+    --send-panel-padding: 0.25em;
+    --send-panel-border-radius: 0.5em;
+    
+    --send-panel-margin: 0.25em;
+    --send-panel-align-items: center;
+    --send-panel-padding: 0.25em;
+    --send-panel-border-radius: 0.5em;
+
+    --send-textbox-border-style: none;
+    --send-textbox-border-color: rgb(71, 64, 55);
+    --send-textbox-background-color: rgb(25, 3, 83);
+    --send-textbox-border-width: 0em;
+    --send-textbox-min-width: 12em;
+    --send-textbox-color: aliceblue;
+    --send-textbox-font-size: 1em;
+    --send-textbox-height: 2em;
+    --send-textbox-padding: 0em 0.5em;
+    --send-textbox-margin: 0.25em;
+    
+    --receive-label-margin: 0.25em;
+    --receive-label-background-color: rgb(0, 0, 0);
+    --receive-label-padding: 0.5em;    
+    
+    --receive-textbox-border-style: none;
+    --receive-textbox-border-width: 0em;
+    --receive-textbox-border-color: rgb(71, 64, 55);
+    --receive-textbox-background-color: rgb(10, 11, 10);
+    --receive-textbox-min-width: 12em;
+    --receive-textbox-height: 2em;
+    --receive-textbox-font-size: 1em;
+    --receive-textbox-display: flex;
+    --receive-textbox-align-items: center;
+    --receive-textbox-padding: 0em 0.5em;
+    --receive-textbox-margin: 0.25em;
+
+    --send-button-background-color: rgb(72, 39, 163);
+    --send-button-border: none;
+    --send-button-color: white;
+    --send-button-text-align: center;
+    --send-button-text-decoration: none;
+    --send-button-display: inline-block;
+    --send-button-font-size: 1em;
+    --send-button-border-radius: 0.5em;
+    --send-button-height: 2em;
+    --send-button-margin: 0.25em;
+    --send-button-padding: 0.5em; */
+}
