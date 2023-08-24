@@ -9,9 +9,12 @@
   </head>
   <body>
     
-    <!-- example simple web interface with its own Connect/Disconnect button -->        
+    <!-- example simple web interface with its own Connect/Disconnect button and send/receive -->        
     <button id="connectButton">Connect Bluetooth</button>    
-    
+    <button id="sendButton">Send</button>
+    <input type="text" id="sendTextBox"></input>
+    <input type="text" id="receiveTextBox"></input>
+
     <!-- custom-serial component allows for bluetooth serial communication with a microcontroller -->
     <!-- to hide its test interface change style="display: block;" to style="display: none;" -->
     <custom-serial id="customSerial" style="display: block;"></custom-serial>

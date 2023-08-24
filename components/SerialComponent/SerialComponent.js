@@ -121,18 +121,7 @@ class CustomSerial extends HTMLElement {
         this.sendPanel.appendChild(this.sendSerialTextBox);
 
         this.sendSerialButton.addEventListener('click', (event) => {
-            if (this.connectedPort) {
-                this.writeToSerial(this.sendSerialTextBox.value + "\n");
-            }
-
-            if (this.uBitBTDevice && this.rxCharacteristic) {
-                try {
-                    let encoder = new TextEncoder();
-                    this.rxCharacteristic.writeValue(encoder.encode(this.sendSerialTextBox.value + "\n"));
-                } catch (error) {
-                    console.log(error);
-                }
-            }
+            this.sendStringViaBluetooth(this.sendSerialTextBox.value);
         });
 
         // Text area for receiving serial data, and button for forwarding to MIDI
@@ -221,7 +210,18 @@ class CustomSerial extends HTMLElement {
           console.log("Disconnected from Bluetooth");
         }
     }
-            
+        
+    sendStringViaBluetooth(str) {
+        if (this.uBitBTDevice && this.rxCharacteristic) {
+            try {
+                let encoder = new TextEncoder();
+                this.rxCharacteristic.writeValue(encoder.encode(str + "\n"));
+            } catch (error) {
+                console.log(error);
+            }
+        }   
+    }
+
     onTxCharacteristicValueChanged(event) {
         let receivedData = [];
         for (var i = 0; i < event.target.value.byteLength; i++) {

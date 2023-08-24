@@ -34,24 +34,28 @@ function closeBluetoothConnection() {
 }
 
 // Receiving messages in web interface from microbit. Replace console.log with your own handling code
-if (theSerialComponent) {
-  theSerialComponent.customHandler = function(message) {
-    // do whatever you want with the 'message'
-    console.log(message);  
-  }
-}
+// if (theSerialComponent) {
+//   theSerialComponent.customHandler = function(message) {
+//     // do whatever you want with the 'message'
+//     console.log(message);  
+//   }
+// }
 
 // Sending messages from web interface to microbit.
 function sendStringToMicrobit(str) {
   const serialComponent = document.querySelector('custom-serial');
   if (serialComponent) {
-    serialComponent.writeToSerial(`${str}\n`);
+    serialComponent.sendStringViaBluetooth(str);
   }
 }
 
 
-// ----- Example web interface with its own Connect/Disconnect toggle button ----- //
+// ----- Example web interface with its own Connect/Disconnect toggle button and send/receive ----- //
 const connectButton = document.getElementById("connectButton");
+const sendButton = document.getElementById("sendButton");
+const sendTextBox = document.getElementById("sendTextBox");
+const receiveTextBox = document.getElementById("receiveTextBox");
+
 connectButton.addEventListener('click', async (event) => {
   // check if bluetooth is connected. If so, close it. If not, open it.
   if (bluetoothIsConnected()) {
@@ -72,4 +76,22 @@ connectButton.addEventListener('click', async (event) => {
     connectButton.innerHTML = "Connect";
   }
 });
+
+
+sendButton.addEventListener('click', (event) => {
+  sendStringToMicrobit(sendTextBox.value);
+});
+
+sendTextBox.addEventListener('change', (event) => {
+  sendStringToMicrobit(sendTextBox.value);
+});
+
+
+if (theSerialComponent) {
+  theSerialComponent.customHandler = function(message) {
+    // do whatever you want with the 'message'
+    receiveTextBox.value = message;
+  }
+}
+
 
