@@ -91,7 +91,21 @@ class CustomSerial extends HTMLElement {
         this.btConnectButton.innerHTML = "Connect";
         this.mainPanel.appendChild(this.btConnectButton);
 
-        this.btConnectButton.addEventListener('click', this.toggleConnection.bind(this));
+        this.btConnectButton.addEventListener('click', async (event) => {
+            if (!this.isConnected()) {            
+                console.log("Requesting Bluetooth Permission ...");
+                let microbitDevice = await navigator.bluetooth.requestDevice({
+                    filters: [{ namePrefix: "BBC micro:bit" }],
+                    optionalServices: [UART_SERVICE_UUID]
+                });
+                let connectionOpener = this.openConnection.bind(this);
+                connectionOpener(microbitDevice);
+            
+            } else {
+                let connectionCloser = this.closeConnection.bind(this);
+                connectionCloser();
+            }
+        });
         
         // button and text box for sending arbitrary strings to the attached device
         this.sendPanel = CustomSerial.newElement('div', 'customSerialSendPanel', 'horizontal-panel custom-serial-panel');
@@ -140,23 +154,18 @@ class CustomSerial extends HTMLElement {
     }
     
 
-    async toggleConnection() {
+    async toggleConnection(microbitDevice) {
         if (!this.isConnected()) {
-            await this.openConnection();
+            await this.openConnection(microbitDevice);
         } else {
             this.closeConnection();
         }
     }
     
 
-    async openConnection() {
+    async openConnection(microbitDevice) {
         try {
-            console.log("Requesting Bluetooth Device...");
-            this.uBitBTDevice = await navigator.bluetooth.requestDevice({
-                filters: [{ namePrefix: "BBC micro:bit" }],
-                optionalServices: [UART_SERVICE_UUID]
-            });
-        
+            this.uBitBTDevice = microbitDevice;
             console.log("Connecting to GATT Server...");
             const server = await this.uBitBTDevice.gatt.connect();
         
