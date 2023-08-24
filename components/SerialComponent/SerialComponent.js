@@ -1,3 +1,13 @@
+// bluetooth constants
+const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+// Allows the micro:bit to transmit a byte array
+const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+// Allows a connected client to send a byte array
+const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+
 // This is our custom web component, which implements Serial port access over bluetooth
 class CustomSerial extends HTMLElement {
 
@@ -80,69 +90,8 @@ class CustomSerial extends HTMLElement {
         this.btConnectButton = CustomSerial.newElement('button', 'customSerialBTConnectButton', 'port-toggle toggled-off');
         this.btConnectButton.innerHTML = "Connect";
         this.mainPanel.appendChild(this.btConnectButton);
-        
-        // bluetooth constants
-        const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 
-        // Allows the micro:bit to transmit a byte array
-        const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-
-        // Allows a connected client to send a byte array
-        const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
-        this.btConnectButton.addEventListener('click', async () => {
-        
-            if (!this.uBitBTDevice) {
-                try {
-                    console.log("Requesting Bluetooth Device...");
-                    this.uBitBTDevice = await navigator.bluetooth.requestDevice({
-                        filters: [{ namePrefix: "BBC micro:bit" }],
-                        optionalServices: [UART_SERVICE_UUID]
-                    });
-                
-                    console.log("Connecting to GATT Server...");
-                    const server = await this.uBitBTDevice.gatt.connect();
-                
-                    console.log("Getting Service...");
-                    const service = await server.getPrimaryService(UART_SERVICE_UUID);
-                
-                    console.log("Getting Characteristics...");
-                    const txCharacteristic = await service.getCharacteristic(
-                        UART_TX_CHARACTERISTIC_UUID
-                    );
-                    txCharacteristic.startNotifications();
-                    txCharacteristic.addEventListener(
-                        "characteristicvaluechanged",
-                        this.onTxCharacteristicValueChanged.bind(this)
-                    );
-                    this.rxCharacteristic = await service.getCharacteristic(
-                        UART_RX_CHARACTERISTIC_UUID
-                    );
-                    
-                    // Successfully connected to Bluetooth, so change status of button
-                    this.btConnectButton.innerHTML = "Disconnect";
-                    this.btConnectButton.classList.remove('toggled-off');
-                    this.btConnectButton.classList.add('toggled-on');
-                    
-                } catch (error) {
-                    this.uBitBTDevice = null;
-                    this.rxCharacteristic = null;
-                    console.log(error);
-                }
-            } else {
-                try {
-                    this.disconnectBluetooth();
-                    this.uBitBTDevice = null;
-                    this.rxCharacteristic = null;
-                    this.btConnectButton.innerHTML = "Connect";
-                    this.btConnectButton.classList.remove('toggled-on');
-                    this.btConnectButton.classList.add('toggled-off');
-                    
-                } catch (e) {
-                    console.warn(`Error disconnecting from bluetooth: ${e}`);
-                } 
-            }
-        });
+        this.btConnectButton.addEventListener('click', this.toggleConnection.bind(this));
         
         // button and text box for sending arbitrary strings to the attached device
         this.sendPanel = CustomSerial.newElement('div', 'customSerialSendPanel', 'horizontal-panel custom-serial-panel');
@@ -184,8 +133,77 @@ class CustomSerial extends HTMLElement {
         this.receivePanel.appendChild(this.serialReadoutElement);
     }
 
-    
+
     // Bluetooth functions
+    isConnected() {
+        return (this.uBitBTDevice) ? true : false;
+    }
+    
+
+    async toggleConnection() {
+        if (!this.isConnected()) {
+            await this.openConnection();
+        } else {
+            this.closeConnection();
+        }
+    }
+    
+
+    async openConnection() {
+        try {
+            console.log("Requesting Bluetooth Device...");
+            this.uBitBTDevice = await navigator.bluetooth.requestDevice({
+                filters: [{ namePrefix: "BBC micro:bit" }],
+                optionalServices: [UART_SERVICE_UUID]
+            });
+        
+            console.log("Connecting to GATT Server...");
+            const server = await this.uBitBTDevice.gatt.connect();
+        
+            console.log("Getting Service...");
+            const service = await server.getPrimaryService(UART_SERVICE_UUID);
+        
+            console.log("Getting Characteristics...");
+            const txCharacteristic = await service.getCharacteristic(
+                UART_TX_CHARACTERISTIC_UUID
+            );
+            txCharacteristic.startNotifications();
+            txCharacteristic.addEventListener(
+                "characteristicvaluechanged",
+                this.onTxCharacteristicValueChanged.bind(this)
+            );
+            this.rxCharacteristic = await service.getCharacteristic(
+                UART_RX_CHARACTERISTIC_UUID
+            );
+            
+            // Successfully connected to Bluetooth, so change status of button
+            this.btConnectButton.innerHTML = "Disconnect";
+            this.btConnectButton.classList.remove('toggled-off');
+            this.btConnectButton.classList.add('toggled-on');
+            
+        } catch (error) {
+            this.uBitBTDevice = null;
+            this.rxCharacteristic = null;
+            console.log(error);
+        }
+    }
+
+
+    closeConnection() {
+        try {
+            this.disconnectBluetooth();
+            this.uBitBTDevice = null;
+            this.rxCharacteristic = null;
+            this.btConnectButton.innerHTML = "Connect";
+            this.btConnectButton.classList.remove('toggled-on');
+            this.btConnectButton.classList.add('toggled-off');
+            
+        } catch (e) {
+            console.warn(`Error disconnecting from bluetooth: ${e}`);
+        } 
+    }
+    
+
     disconnectBluetooth() {
         if (!this.uBitBTDevice) { return; }
       
