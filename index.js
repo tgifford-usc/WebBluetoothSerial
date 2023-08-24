@@ -26,7 +26,7 @@ function closeBluetoothConnection() {
   if (theSerialComponent) {
     try {
       let connectionCloser = theSerialComponent.closeConnection.bind(theSerialComponent);
-      connectionCloser(microbitDevice);    
+      connectionCloser();    
     } catch(error) {
       console.log(`Could not close Bluetooth connection: ${error}`);
     }
